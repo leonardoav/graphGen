@@ -1,0 +1,19 @@
+#ifndef DRAWING_H
+#define DRAWING_H
+
+#include <cairo/cairo.h>
+#include "utils.h"
+
+void draw_line(cairo_t *context, Point * points);
+
+void create_point(cairo_t *context, Point *points, Color color,float RAIO);
+
+void drawAxisX(cairo_t *context, int width, int height);
+
+void drawAxisY(cairo_t *context, int width, int height);
+
+//int higherX(json_t *root);
+
+//int higherY(json_t *root);
+    
+#endif
