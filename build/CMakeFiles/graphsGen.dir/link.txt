@@ -1,0 +1,1 @@
+/usr/bin/clang      CMakeFiles/graphsGen.dir/main.c.o CMakeFiles/graphsGen.dir/drawing.c.o CMakeFiles/graphsGen.dir/storage.c.o  -o graphsGen -rdynamic -ljansson -lcairo 

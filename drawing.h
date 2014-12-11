@@ -3,17 +3,20 @@
 
 #include <cairo/cairo.h>
 #include "utils.h"
+#include <jansson.h>
 
-void draw_line(cairo_t *context, Point * points);
 
-void create_point(cairo_t *context, Point *points, Color color,float RAIO);
+void draw_line(cairo_t *context, Point * content, Color color);
 
-void drawAxisX(cairo_t *context, int width, int height);
+void create_point(cairo_t *context, Point *content, Color color,float RAIO);
 
-void drawAxisY(cairo_t *context, int width, int height);
+void drawAxisX(cairo_t *context, int width, int height, float axisThickness);
 
-//int higherX(json_t *root);
+void drawAxisY(cairo_t *context, int width, int height, float axisThickness);
 
-//int higherY(json_t *root);
+void draw_area(cairo_t *context, Point *content, Color color,int height);
+
+
+
     
 #endif

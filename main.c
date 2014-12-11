@@ -2,6 +2,7 @@
 #include "storage.h"
 #include "drawing.h"
 
+
 int main(int argc, char * argv[]) {
     json_t *root;
     json_error_t error;
@@ -21,7 +22,8 @@ int main(int argc, char * argv[]) {
     printf("Width: %d\n", width);
     int height = JSON_getInt(root, "height");
     printf("Height: %d\n", height);
-    printf("readOnly: %d\n", JSON_getBool(root, "readOnly"));
+    int type = JSON_getInt(root, "type");
+    printf("Type: %d\n", type);
 
     cairo_surface_t *surface =
     cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
@@ -30,9 +32,6 @@ int main(int argc, char * argv[]) {
     cairo_set_source_rgba(context, 1, 1, 1, 1);
     cairo_rectangle(context, 0, 0, width, height);
     cairo_fill(context);
-    
-    drawAxisX(context, width, height);
-    drawAxisY(context, width, height);
 
     Color pointColor = JSON_getColor(root);
     cairo_set_source_rgba(context, pointColor.r,
@@ -41,10 +40,20 @@ int main(int argc, char * argv[]) {
                                    pointColor.a);
     float HIGHERX = higherX(root);
     float HIGHERY = higherY(root);
-    int RAIO = (width + height)/1000 + 2;
-    Point *points = JSON_getPoints(root, height, width, HIGHERX, HIGHERY);
-    draw_line(context, points);
-    create_point(context, points, pointColor, RAIO);
+    float RAIO = (width + height)/1000 + 2.5;
+    float axisThickness = (width + height)/1000 + 2.5;
+    Point *content = JSON_getPoints(root, width, height, HIGHERX, HIGHERY);
+    if ( type == 0 ){
+        create_point(context, content, pointColor, RAIO);
+    }if ( type == 1){
+        draw_line(context, content, pointColor);
+        //create_point(context, content, pointColor, RAIO);
+    }if ( type == 2){
+        draw_area(context, content, pointColor, height);
+    }
+    drawAxisX(context, width, height, axisThickness);
+    drawAxisY(context, width, height, axisThickness);
+        
     cairo_surface_write_to_png(surface, fileName);
  
 

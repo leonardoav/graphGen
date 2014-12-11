@@ -37,8 +37,8 @@ Color JSON_getColor(json_t *root) {
 double higherX(json_t *root){
     int i = 0;  
     double xHigher = 0;
-    json_t *jPoints = json_object_get(root, "points");
-    Point * points = malloc(sizeof(Point)*json_array_size(jPoints));
+    json_t *jPoints = json_object_get(root, "content");
+    Point * content = malloc(sizeof(Point)*json_array_size(jPoints));
     for(; i < json_array_size(jPoints); ++i){
         json_t * jPoint = json_array_get(jPoints, i);
         json_t *jX = json_object_get(jPoint, "x");
@@ -51,8 +51,8 @@ double higherX(json_t *root){
 double higherY( json_t *root){
     int i = 0; 
     double yHigher = 0;
-    json_t *jPoints = json_object_get(root, "points");
-    Point * points = malloc(sizeof(Point)*json_array_size(jPoints));
+    json_t *jPoints = json_object_get(root, "content");
+    Point * content = malloc(sizeof(Point)*json_array_size(jPoints));
     for(; i < json_array_size(jPoints); i++){
         json_t * jPoint = json_array_get(jPoints, i);
         json_t *jY = json_object_get(jPoint, "y");
@@ -63,21 +63,60 @@ double higherY( json_t *root){
 }
 
 Point * JSON_getPoints(json_t *root, float width, float height, double HIGHERX, double HIGHERY) {
-    json_t *jPoints = json_object_get(root, "points");
-    Point * points = malloc(sizeof(Point)*json_array_size(jPoints));
+    json_t *jPoints = json_object_get(root, "content");
+    Point * content = malloc(sizeof(Point)*json_array_size(jPoints));
     for(int i = 0; i < json_array_size(jPoints); ++i){
         json_t * jPoint = json_array_get(jPoints, i);
         json_t *jX = json_object_get(jPoint, "x");
         json_t *jY = json_object_get(jPoint, "y");
         if(json_integer_value(jX) >= 0){
-            points[i].x = width * 0.10 + (json_integer_value(jX)/HIGHERX) * (width * 0.80);
+            content[i].x = width * 0.10 + (json_integer_value(jX)/HIGHERX) * (width * 0.80);
         } else{ 
-            points[i].x = json_integer_value(jX);
+            content[i].x = json_integer_value(jX);
           } if (json_integer_value(jY) >= 0){
-            points[i].y = height * 0.90 - (json_integer_value(jY)/HIGHERY) * (height * 0.80);
+            content[i].y = height * 0.90 - (json_integer_value(jY)/HIGHERY) * (height * 0.80);
             } else {
-            points[i].y = json_integer_value(jY);
+            content[i].y = json_integer_value(jY);
               }
+    } 
+    int cont1;//Define o primeiro contador
+    int cont2;//Define o segundo contador
+    Point buffer;//Variável do tipo Point temporária
+
+    //Esse primeiro loop irá salvar o primeiro valor e o outro irá comparlo com o resto do Array
+    for(cont1 = 0; cont1 <  json_array_size(jPoints) - 2 ; cont1++){
+        for(cont2 = cont1 + 1; cont2 <= json_array_size(jPoints) - 2; cont2++){
+            //Caso algum número do array seja menor que o primeiro valor, ambos trocam de posição
+            if(content[cont2].x < content[cont1].x){            
+                buffer = content[cont2];
+                content[cont2] = content[cont1];
+                content[cont1] = buffer;
+            }
+        }
     }
-    return points;
+
+    return content;//Retorna o array de Point
+    
 }
+
+/*Point * sortPoints(json_t *root, Point *content){
+        //Função de Ordenação
+    int cont1;//Define o primeiro contador
+    int cont2;//Define o segundo contador
+    Point buffer;//Variável do tipo Point temporária
+
+    //Esse primeiro loop irá salvar o primeiro valor e o outro irá comparlo com o resto do Array
+    for(cont1 = 0; cont1 <  json_array_size(jPoints) - 2 ; cont1++){
+        for(cont2 = cont1 + 1; cont2 <= json_array_size(jPoints) - 2; cont2++){
+            //Caso algum número do array seja menor que o primeiro valor, ambos trocam de posição
+            if(content[cont2].x < content[cont1].x){            
+                buffer = content[cont2];
+                content[cont2] = content[cont1];
+                content[cont1] = buffer;
+            }
+        }
+    }
+
+    return content1;//Retorna o array de Point
+}*/
+
