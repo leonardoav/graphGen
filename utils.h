@@ -19,8 +19,3 @@ typedef struct point Point;
 
 #endif
 
-// struct line {
-//     Point *points;
-// };
-//
-// typedef struct line Line;

@@ -3,3 +3,4 @@ SET (CMAKE_C_COMPILER "${DEVROOT}/usr/bin/clang")
 add_executable(graphsGen main.c drawing.c storage.c)
 target_link_libraries(graphsGen jansson)
 target_link_libraries(graphsGen cairo)
+

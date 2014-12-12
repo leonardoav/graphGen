@@ -1,1 +1,0 @@
-/home/heidi/Área de Trabalho/graphGen/build/CMakeFiles/graphsGen.dir

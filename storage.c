@@ -1,10 +1,5 @@
 #include "storage.h"
 
-double JSON_getDouble(json_t *node, const char * varName) {
-    json_t *jVal = json_object_get(node, varName);
-    return json_real_value(jVal);
-}
-
 int JSON_getInt(json_t *node, const char * varName) {
     json_t *jVal = json_object_get(node, varName);
     return json_integer_value(jVal);
@@ -34,7 +29,7 @@ Color JSON_getColor(json_t *root) {
     return c;
 }
 
-double higherX(json_t *root){
+double higherX(json_t *root){//FUNÇÃO PARA PEGAR O MAIOR X---
     int i = 0;  
     double xHigher = 0;
     json_t *jPoints = json_object_get(root, "content");
@@ -45,10 +40,10 @@ double higherX(json_t *root){
         if ( xHigher < json_integer_value(jX))
             xHigher = json_integer_value(jX);
     }
-    return xHigher;
+    return xHigher;//RETORNA O MAIOR X---
 }
 
-double higherY( json_t *root){
+double higherY( json_t *root){//FUNÇÃO PARA PEGAR O MAIOR Y---
     int i = 0; 
     double yHigher = 0;
     json_t *jPoints = json_object_get(root, "content");
@@ -59,7 +54,7 @@ double higherY( json_t *root){
         if( yHigher < json_integer_value(jY))
             yHigher = json_integer_value(jY);
     }
-    return yHigher;
+    return yHigher;//RETORNA O MAIOR Y---
 }
 
 Point * JSON_getPoints(json_t *root, float width, float height, double HIGHERX, double HIGHERY) {
@@ -70,23 +65,22 @@ Point * JSON_getPoints(json_t *root, float width, float height, double HIGHERX, 
         json_t *jX = json_object_get(jPoint, "x");
         json_t *jY = json_object_get(jPoint, "y");
         if(json_integer_value(jX) >= 0){
+            //PROPORÇÃO DOS PONTOS---
             content[i].x = width * 0.10 + (json_integer_value(jX)/HIGHERX) * (width * 0.80);
         } else{ 
             content[i].x = json_integer_value(jX);
           } if (json_integer_value(jY) >= 0){
+            //PROPORÇÃO DOS PONTOS---
             content[i].y = height * 0.90 - (json_integer_value(jY)/HIGHERY) * (height * 0.80);
             } else {
             content[i].y = json_integer_value(jY);
               }
-    } 
-    int cont1;//Define o primeiro contador
-    int cont2;//Define o segundo contador
-    Point buffer;//Variável do tipo Point temporária
-
-    //Esse primeiro loop irá salvar o primeiro valor e o outro irá comparlo com o resto do Array
+    } //ORDENANDO OS PONTOS ---
+    int cont1;
+    int cont2;
+    Point buffer;
     for(cont1 = 0; cont1 <  json_array_size(jPoints) - 2 ; cont1++){
         for(cont2 = cont1 + 1; cont2 <= json_array_size(jPoints) - 2; cont2++){
-            //Caso algum número do array seja menor que o primeiro valor, ambos trocam de posição
             if(content[cont2].x < content[cont1].x){            
                 buffer = content[cont2];
                 content[cont2] = content[cont1];
@@ -95,28 +89,6 @@ Point * JSON_getPoints(json_t *root, float width, float height, double HIGHERX, 
         }
     }
 
-    return content;//Retorna o array de Point
+    return content;//RETORNA OS PONTOS ORDENADOS---
     
-}
-
-/*Point * sortPoints(json_t *root, Point *content){
-        //Função de Ordenação
-    int cont1;//Define o primeiro contador
-    int cont2;//Define o segundo contador
-    Point buffer;//Variável do tipo Point temporária
-
-    //Esse primeiro loop irá salvar o primeiro valor e o outro irá comparlo com o resto do Array
-    for(cont1 = 0; cont1 <  json_array_size(jPoints) - 2 ; cont1++){
-        for(cont2 = cont1 + 1; cont2 <= json_array_size(jPoints) - 2; cont2++){
-            //Caso algum número do array seja menor que o primeiro valor, ambos trocam de posição
-            if(content[cont2].x < content[cont1].x){            
-                buffer = content[cont2];
-                content[cont2] = content[cont1];
-                content[cont1] = buffer;
-            }
-        }
-    }
-
-    return content1;//Retorna o array de Point
-}*/
-
+}      
